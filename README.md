@@ -1,0 +1,1 @@
+This repo contains code for E-commerce Furniture shop developed using flask.
