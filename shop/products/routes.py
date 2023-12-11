@@ -5,6 +5,11 @@ from .models import Brand, Category, Addproduct
 from .forms import Addproducts
 import secrets
 
+@app.route('/')
+def home():
+    products = Addproduct.query.filter(Addproduct.stock > 0)
+    return render_template('products/index.html', products = products)
+
 @app.route('/addbrand', methods=['GET', 'POST'])
 def addbrand():
     if 'email' not in session:
@@ -51,5 +56,6 @@ def addproduct():
                              category_id=category, image=image)
         db.session.add(addpro)
         flash(f"The product '{name}' has been added to your database", "success")
+        db.session.commit()
         return redirect(url_for('admin'))
     return render_template('products/addproduct.html', title="Add Product page", form=form, brands=brands, categories=categories)
