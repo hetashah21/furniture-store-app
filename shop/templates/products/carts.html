@@ -1,0 +1,71 @@
+{% extends 'layout.html' %}
+{% block content %}
+<div class="container">
+    <nav class="navbar navbar-expand-lg border-bottom border-body" style="background-color: #e3f2fd;">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="/">Futurniture</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse float-right" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="/">All products</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" aria-current="page" href="/admin">Admin</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" aria-current="page" href="/admin">Admin</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" aria-current="page" href="/addbrand">Brands</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" aria-current="page" href="/carts">Cart ({{ session['ShoppingCart']|length }})</a>
+                </li>
+            </ul>
+          </div>
+        </div>
+    </nav>
+</div>
+<div class="container">
+    <div class="text-center h1 p-2">Shopping Cart</div>
+    <div class="row">
+        <table class="table table-sm">
+            <thead>
+                <th>Sr</th>
+                <th>Name</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Subtotal before savings</th>
+                <th>Discount</th>
+                <th>Subtotal</th>
+            </thead>
+            <tbody>
+                {% for key, product in session['ShoppingCart'].items() %}
+                <tr>
+                    <td>{{loop.index}}</td>
+                    <td>{{product.name}}</td>
+                    <td>${{product.price}}</td>
+                    <td>{{product.quantity}}</td>
+                    {% set totalBeforeDiscount = product.price|float * product.quantity|int %}
+                    <td>${{totalBeforeDiscount}}</td>
+                    {% set discount = "%0.2f" | format(totalBeforeDiscount * (product.discount/100)) %}
+                    <td>${{discount}}</td>
+                    <td>{{totalBeforeDiscount|float - discount|float}}</td>
+                </tr>
+                {% endfor %}
+                <tr>
+                    <td colspan="3"></td>
+                    <td colspan="4"><h5 style="float:right;">Tax: ${{tax}}</h5></td>
+                </tr>
+                <tr>
+                    <td colspan="3"></td>
+                    <td colspan="4"><h5 style="float:right;">Grand Total: ${{grandtotal}}</h5></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock content %}

@@ -2,25 +2,33 @@
 {% block content %}
 <!------ navbar starts ======-->
 <div class="container">
-    <nav class="navbar navbar-expand-lg bg-body-tertiary">
-        <div class="container-fluid">
-          <a class="navbar-brand" href="/">Futurniture</a>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+  <nav class="navbar navbar-expand-lg border-bottom border-body" style="background-color: #e3f2fd;">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="/">Futurniture</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse float-right" id="navbarSupportedContent">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="/">All products</a>
+                  <a class="nav-link active" aria-current="page" href="/">All products</a>
               </li>
-            </ul>
-            <form class="d-flex" role="search">
-              <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-              <button class="btn btn-outline-success" type="submit">Search</button>
-            </form>
-          </div>
+              <li class="nav-item">
+                  <a class="nav-link" aria-current="page" href="/admin">Admin</a>
+              </li>
+              <li class="nav-item">
+                  <a class="nav-link" aria-current="page" href="/addbrand">Brands</a>
+              </li>
+              <li class="nav-item">
+                  <a class="nav-link" aria-current="page" href="/addcat">Categories</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" aria-current="page" href="/carts">Cart ({{ session['ShoppingCart']|length }})</a>
+              </li>
+          </ul>
         </div>
-    </nav>
+      </div>
+  </nav>
 </div>
 <!------ navbar ends ======-->
 <div class="container">
@@ -41,7 +49,11 @@
                 </div>
                 <div class="card-footer">
                     <a href="{{url_for('single_page', id=product.id)}}" class="float-left btn btn-sm btn-primary">Details</a>
-                    <a href="#" class="float-right btn btn-sm btn-warning">Add to cart</a>
+                    <form action="{{url_for('AddCart')}}" method="POST">
+                      <input type="hidden" name="product_id" value="{{product.id}}">
+                      <input type="hidden" name="quantity" id="" value="1" min="1" max="{{product.stock}}">
+                      <button type="submit" class="btn btn-sm btn-warning float-right">Add to cart</button>
+                  </form>
                 </div>
         </div>
         {% endfor %}
