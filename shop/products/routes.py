@@ -7,11 +7,17 @@ import secrets
 
 @app.route('/')
 def home():
+    if 'email' not in session:
+        flash(f'Please login first', 'danger')
+        return redirect(url_for('login'))
     products = Addproduct.query.filter(Addproduct.stock > 0)
     return render_template('products/index.html', products = products)
 
 @app.route('/product/<int:id>')
 def single_page(id):
+    if 'email' not in session:
+        flash(f'Please login first', 'danger')
+        return redirect(url_for('login'))
     product = Addproduct.query.get_or_404(id)
     return render_template('products/single_page.html', product=product)
 
@@ -45,6 +51,9 @@ def addcat():
 
 @app.route('/addproduct', methods=['POST', 'GET'])
 def addproduct():
+    if 'email' not in session:
+        flash(f'Please login first', 'danger')
+        return redirect(url_for('login'))
     brands = Brand.query.all()
     categories = Category.query.all()
     form = Addproducts(request.form)
